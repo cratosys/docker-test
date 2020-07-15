@@ -1,21 +1,21 @@
-FROM ubuntu:latest
-FROM node:latest
+FROM ubuntu:16.04
+FROM node:10
 
 WORKDIR /
 COPY ./ ./
 RUN npm install
+#RUN npm install pm2 -g
 
-FROM nginx:latest
-
-
-COPY ./nginx.conf /etc/nginx/nginx.conf
 EXPOSE 3030 
 EXPOSE 4040
 
-ENTRYPOINT ["pm2", "--no-daemon", "start"]
+ENTRYPOINT ["pm2-runtime", "--format", "start"]
 CMD ["process.json"]
 
-#CMD ["pm2-runtime","process.json"]
+FROM nginx:latest
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+#CMD ["pm2-runtime","--format","start","process.json"]
 
 
 
